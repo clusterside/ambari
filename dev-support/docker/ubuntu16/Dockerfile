@@ -28,8 +28,10 @@ RUN apt-get update -q -y \
     jq \
     make \
     openjdk-8-jdk \
-    python-setuptools \
     python2.7 \
     python2.7-dev \
+    python-setuptools \
     xz-utils \
+    sudo \
+    npm \
   && rm -rf /var/lib/apt/lists/*

@@ -18,6 +18,10 @@
 
 FROM centos:7
 
+RUN echo root:changeme | chpasswd
+
+RUN yum -y install epel-release && yum -y update
+
 RUN yum -q -y install \
     curl \
     gcc \
@@ -31,6 +35,8 @@ RUN yum -q -y install \
     python-setuptools \
     rpm-build \
     which \
+    sudo \
+    npm \
   && yum clean all \
   && rm -rf /var/cache/yum
 
