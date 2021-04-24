@@ -2470,16 +2470,6 @@ public class Configuration {
       "metrics.retrieval-service.request.ttl", 5);
 
   /**
-   * The number of tasks that can be queried from the database at once In the
-   * case of more tasks, multiple queries are issued
-   *
-   * @return
-   */
-  @Markdown(description = "The maximum number of tasks which can be queried by ID from the database.")
-  public static final ConfigurationProperty<Integer> TASK_ID_LIST_LIMIT = new ConfigurationProperty<>(
-      "task.query.parameterlist.size", 999);
-
-  /**
    * Indicates whether the current ambari server instance is the active instance.
    * If this property is missing, the value will be considered to be true.
    * If present, it should be explicitly set to "true" to set this as the active instance.
@@ -2643,6 +2633,14 @@ public class Configuration {
   @Markdown(description = "The number of threads to use when executing server-side Kerberos commands, such as generate keytabs.")
   public static final ConfigurationProperty<Integer> KERBEROS_SERVER_ACTION_THREADPOOL_SIZE = new ConfigurationProperty<>(
     "server.kerberos.action.threadpool.size", 1);
+
+  @Markdown(description = "The Agent command publisher pool. Affects degree of parallelization for generating the commands.")
+  public static final ConfigurationProperty<Integer> AGENT_COMMAND_PUBLISHER_THREADPOOL_SIZE = new ConfigurationProperty<>(
+    "server.pools.agent.command.publisher.size", 5);
+
+  @Markdown(description = "Configures size of the default JOIN Fork pool used for Streams.")
+  public static final ConfigurationProperty<Integer> DEFAULT_FORK_JOIN_THREADPOOL_SIZE = new ConfigurationProperty<>(
+    "server.pools.default.size", 5);
 
   /**
    * A flag to determine whether error stacks appear on the error page
@@ -5511,16 +5509,6 @@ public class Configuration {
   }
 
   /**
-   * Returns the number of tasks that can be queried from the database at once
-   * In the case of more tasks, multiple queries are issued
-   *
-   * @return
-   */
-  public int getTaskIdListLimit() {
-    return Integer.parseInt(getProperty(TASK_ID_LIST_LIMIT));
-  }
-
-  /**
    * Get whether the current ambari server instance the active instance
    *
    * @return true / false
@@ -5635,8 +5623,22 @@ public class Configuration {
    *
    * @return the threadpool size, defaulting to 1
    */
-  public int getKerberosServerActionThreadpoolSize() {
+  public int getKerberosServerActionThreadPoolSize() {
     return Integer.parseInt(getProperty(KERBEROS_SERVER_ACTION_THREADPOOL_SIZE));
+  }
+
+  /**
+   * Determines the amount of threads dedicated for {@link org.apache.ambari.server.events.publishers.AgentCommandsPublisher}
+   */
+  public int getAgentCommandPublisherThreadPoolSize() {
+    return Integer.parseInt(getProperty(AGENT_COMMAND_PUBLISHER_THREADPOOL_SIZE));
+  }
+
+  /**
+   * Determines the amount of threads used by default ForJoin Pool
+   */
+  public int getDefaultForkJoinPoolSize(){
+    return Integer.parseInt(getProperty(DEFAULT_FORK_JOIN_THREADPOOL_SIZE));
   }
 
   /**
